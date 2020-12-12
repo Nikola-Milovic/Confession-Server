@@ -1,14 +1,12 @@
 const { Confession, validate } = require('../models/confession');
+const confessionController = require("../controllers/confession.controller")
 const express = require('express');
 const logger = require('../logging/logger')
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  logger.info("get")
-  const confs = await Confession.find()
-    .sort({ date: -1 })
-    .limit(5)
-  res.send(confs);
+  const confessionList = await confessionController.getConfessionList(req.query.sort)
+  res.send(confessionList);
 });
 
 router.post('/', async (req, res) => {
