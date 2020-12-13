@@ -1,20 +1,11 @@
-const { Confession, validate } = require('../models/confession');
-const confessionController = require("../controllers/confession.controller")
+const { Comment, validate } = require('../models/comment');
 const express = require('express');
 const logger = require('../logging/logger')
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const confessionList = await confessionController.getConfessionList(req.query.sort)
-  res.send(confessionList.map(conf => {
-    conf.text = conf.text.substring(0, 300);
-    return conf;
-  }));
-});
-
-router.get('/conf/', async (req, res) => {
-  const conf = await Confession.findById(req.query.id).exec()
-  res.send(conf);
+  const comments = await Comment.find({ confessionID: req.query.id })
+  res.send(comments)
 });
 
 router.post('/', async (req, res) => {
@@ -24,7 +15,7 @@ router.post('/', async (req, res) => {
     res.status(400).send(error.details[0].message);
     return
   }
-  conf = new Confession({ text: req.body.text });
+  conf = new Comment({ text: req.body.text, confessionID: req.query.id });
   await conf.save(function (err, c) {
     if (err) {
       logger.error("error saving is " + err)
@@ -32,7 +23,7 @@ router.post('/', async (req, res) => {
       return
     }
     logger.info("Succesfully saved")
-    res.send({ status: '200', id: c.id })
+    res.sendStatus(200)
   });
 });
 

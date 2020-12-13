@@ -9,20 +9,21 @@ async function getConfessionList(sortBy) {
             confs = await Confession.find()
                 .sort({ date: -1 })
                 .limit(10)
-            return confs
+            break;
         case "oldest":
             logger.info("Sort by oldest")
             confs = await Confession.find()
                 .sort({ date: 1 })
                 .limit(10)
-            return confs
+            break;
         case "mostliked":
             confs = await Confession.find()
                 .sort({ likes: -1 })
                 .limit(10)
-            return confs
-    }m
+            break;
+    }
 
+    return confs;
 }
 
 module.exports.getConfessionList = getConfessionList

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const confessionShema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
   text: {
     type: String,
     required: true,
@@ -16,12 +16,15 @@ const confessionShema = new mongoose.Schema({
   },
   dislikes: {
     type: Number, default: 0
+  },
+  confessionID: {
+    type: String, required: true
   }
 });
 
-const Confession = mongoose.model('Confession', confessionShema);
+const Comment = mongoose.model('Comment', commentSchema);
 
-function validateConfession(confession) {
+function validateComment(comment) {
   const schema = Joi.object({
     text: Joi.string()
       .min(20)
@@ -29,8 +32,8 @@ function validateConfession(confession) {
       .required()
   })
 
-  return schema.validate(confession)
+  return schema.validate(comment)
 }
 
-exports.Confession = Confession;
-exports.validate = validateConfession;
+exports.Comment = Comment;
+exports.validate = validateComment;
