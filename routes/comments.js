@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   const { error } = validate({ text: req.body.text });
   if (error) {
     logger.error("error validating is " + error.details[0].message)
-    res.status(400).send(error.details[0].message);
+    res.sendStatus(400);
     return
   }
   conf = new Comment({ text: req.body.text, confessionID: req.query.id });
